@@ -10,18 +10,20 @@ const bot = new TelegramBot(token, { polling: true });
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
-  // Menyu tugmasini yaratish
+  // Menyu tugmalarini yaratish
   const menuOptions = {
     reply_markup: {
       keyboard: [
-        [{ text: 'Menyu 1' }, { text: 'Menyu 2' }, { text: 'Menyu 3' }]
+        [{ text: 'Main menu' }, { text: 'Game' }],
+        [{ text: 'Menyu 3' }],
       ],
-      resize_keyboard: true
+      resize_keyboard: true, // Tugmalarni mos hajmga keltirish
+      one_time_keyboard: true // Bir martalik tugmalar
     }
   };
 
   // Foydalanuvchiga menyu tugmalarini yuborish
-  bot.sendMessage(chatId, 'Menyuni tanlang:', menuOptions);
+  bot.sendMessage(chatId, 'Menyu tugmasini tanlang:', menuOptions);
 });
 
 // Menyu tugmalarini qayta ishlash
@@ -29,34 +31,36 @@ bot.on('message', (msg) => {
   const chatId = msg.chat.id;
 
   if (msg.text === 'Menyu 1') {
-    // Telegram o'yin boshlash tugmasi uchun inline reply_markup
-    const gameOptions1 = {
+    // Menyu 1 uchun link
+    const gameOptions = {
       reply_markup: {
         inline_keyboard: [
-          [{ text: 'O\'yinni boshlash', callback_game: {} }]
+          [{ text: 'O\'yinni boshlash', url: 'https://000quvonchbek.github.io/multi.bot/menyu1' }]
         ]
       }
     };
-
-    // Foydalanuvchiga o'yinni boshlash tugmasini yuborish - Menyu 1
-    bot.sendMessage(chatId, 'Menyu 1 uchun o\'yinni boshlash tugmasini bosing:', gameOptions1);
+    bot.sendMessage(chatId, 'Siz Main menu ni tanladingiz.', gameOptions);
+  } else if (msg.text === 'Game') {
+    // Menyu 2 uchun link
+    const gameOptions = {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: 'Menyu 2 uchun havola', url: 'https://000quvonchbek.github.io/multi.bot/' }]
+        ]
+      }
+    };
+    bot.sendMessage(chatId, 'Siz Game ni tanladingiz.', gameOptions);
+  } else if (msg.text === 'Menyu 3') {
+    // Menyu 3 uchun link
+    const gameOptions = {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: 'Menyu 3 uchun havola', url: 'https://000quvonchbek.github.io/menyu3/' }]
+        ]
+      }
+    };
+    bot.sendMessage(chatId, 'Siz Menyu 3 ni tanladingiz.', gameOptions);
+  } else {
+    bot.sendMessage(chatId, 'Menyudan tanlang.');
   }
-
-  if (msg.text === 'Menyu 2') {
-    // Menyu 2 uchun o'yinni boshlash
-    bot.sendMessage(chatId, 'Menyu 2 o\'yini hozircha mavjud emas.');
-  }
-
-  if (msg.text === 'Menyu 3') {
-    // Menyu 3 uchun o'yinni boshlash
-    bot.sendMessage(chatId, 'Menyu 3 o\'yini hozircha mavjud emas.');
-  }
-});
-
-// Callback handler - o'yinni boshlash uchun
-bot.on('callback_query', (query) => {
-  const chatId = query.message.chat.id;
-
-  // O'yin boshlanishi - o'yin URL'ni yashirish va ichki HTML5 o'yin qo'llash
-  bot.answerCallbackQuery(query.id, { text: 'O\'yin boshlandi!' });
 });
