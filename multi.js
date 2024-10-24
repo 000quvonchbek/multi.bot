@@ -10,13 +10,13 @@ const bot = new TelegramBot(token, { polling: true });
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
-  // 3 ta menyu tugmasini yaratish
+  // Menyu tugmasini yaratish
   const menuOptions = {
     reply_markup: {
       keyboard: [
-        [{ text: 'Menyu 1' }, { text: 'Game' }, { text: 'Menyu 3' }] // 3 ta menyu tugmasi
+        [{ text: 'Menyu 1' }, { text: 'Menyu 2' }, { text: 'Menyu 3' }]
       ],
-      resize_keyboard: true // Tugmani mos hajmga keltirish
+      resize_keyboard: true
     }
   };
 
@@ -29,44 +29,34 @@ bot.on('message', (msg) => {
   const chatId = msg.chat.id;
 
   if (msg.text === 'Menyu 1') {
-    // O'yinni boshlash tugmasi - Menyu 1
+    // Telegram o'yin boshlash tugmasi uchun inline reply_markup
     const gameOptions1 = {
       reply_markup: {
         inline_keyboard: [
-          [{ text: 'O\'yinni boshlash', url: 'https://exemple.com' }]
+          [{ text: 'O\'yinni boshlash', callback_game: {} }]
         ]
       }
     };
 
-    // Foydalanuvchiga o'yin tugmasini yuborish - Menyu 1
+    // Foydalanuvchiga o'yinni boshlash tugmasini yuborish - Menyu 1
     bot.sendMessage(chatId, 'Menyu 1 uchun o\'yinni boshlash tugmasini bosing:', gameOptions1);
   }
 
-  if (msg.text === 'Game') {
-    // O'yinni boshlash tugmasi - Menyu 2
-    const gameOptions2 = {
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: 'O\'yinni boshlash', url: 'https://000quvonchbek.github.io/multi.bot/' }]
-        ]
-      }
-    };
-
-    // Foydalanuvchiga o'yin tugmasini yuborish - Menyu 2
-    bot.sendMessage(chatId, 'Menyu 2 uchun o\'yinni boshlash tugmasini bosing:', gameOptions2);
+  if (msg.text === 'Menyu 2') {
+    // Menyu 2 uchun o'yinni boshlash
+    bot.sendMessage(chatId, 'Menyu 2 o\'yini hozircha mavjud emas.');
   }
 
   if (msg.text === 'Menyu 3') {
-    // O'yinni boshlash tugmasi - Menyu 3
-    const gameOptions3 = {
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: 'O\'yinni boshlash', url: 'https://example.com/menyu3' }]
-        ]
-      }
-    };
-
-    // Foydalanuvchiga o'yin tugmasini yuborish - Menyu 3
-    bot.sendMessage(chatId, 'Menyu 3 uchun o\'yinni boshlash tugmasini bosing:', gameOptions3);
+    // Menyu 3 uchun o'yinni boshlash
+    bot.sendMessage(chatId, 'Menyu 3 o\'yini hozircha mavjud emas.');
   }
+});
+
+// Callback handler - o'yinni boshlash uchun
+bot.on('callback_query', (query) => {
+  const chatId = query.message.chat.id;
+
+  // O'yin boshlanishi - o'yin URL'ni yashirish va ichki HTML5 o'yin qo'llash
+  bot.answerCallbackQuery(query.id, { text: 'O\'yin boshlandi!' });
 });
