@@ -17,8 +17,8 @@ bot.onText(/\/start/, (msg) => {
         [{ text: 'Menyu 1' }, { text: 'Menyu 2' }],
         [{ text: 'Menyu 3' }],
       ],
-      resize_keyboard: true, // Tugmalarni mos hajmga keltirish
-      one_time_keyboard: true // Bir martalik tugmalar
+      resize_keyboard: true,
+      one_time_keyboard: true
     }
   };
 
@@ -26,18 +26,11 @@ bot.onText(/\/start/, (msg) => {
   bot.sendMessage(chatId, 'Menyu tugmasini tanlang:', menuOptions);
 });
 
-// Menyu tugmalarini qayta ishlash
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
 
   if (msg.text === 'Menyu 1') {
-    bot.sendMessage(chatId, 'Siz Menyu 1 ni tanladingiz. O\'yinni boshlash uchun tugmani bosing:', {
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: "O'yinni boshlash", web_app: { url: "https://sizning-foydalanuvchi-nomi.github.io/oyin/" }}]
-        ]
-      }
-    });
+    bot.sendMessage(chatId, 'Siz Menyu 1 ni tanladingiz. Mana sayt: https://000quvonchbek.github.io/multi.bot/');
   } else if (msg.text === 'Menyu 2') {
     bot.sendMessage(chatId, 'Siz Menyu 2 ni tanladingiz.');
   } else if (msg.text === 'Menyu 3') {
@@ -46,3 +39,4 @@ bot.on('message', (msg) => {
     bot.sendMessage(chatId, 'Menyudan tanlang.');
   }
 });
+
