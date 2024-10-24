@@ -38,25 +38,40 @@
             bottom: 0;
             left: 450px;
         }
+        #score {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
         button {
             margin-top: 20px;
             padding: 10px 20px;
+        }
+        #game-over {
+            display: none;
+            font-size: 24px;
+            color: red;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
     <h1>Mini O'yin</h1>
+    <div id="score">Score: 0</div> <!-- Ballar ko'rsatkichi -->
     <div id="game">
         <div id="player"></div>
         <div id="obstacle"></div>
     </div>
     <button onclick="jump()">Jump!</button>
     <button onclick="restartGame()">Restart Game</button> <!-- O'yinni qayta boshlash tugmasi -->
+    <div id="game-over">O'yin tugadi!</div> <!-- O'yin tugadi xabari -->
 
     <script>
         let player = document.getElementById('player');
         let obstacle = document.getElementById('obstacle');
+        let scoreDisplay = document.getElementById('score');
+        let gameOverDisplay = document.getElementById('game-over');
         let isJumping = false;
         let gameOver = false;
         let score = 0;
@@ -69,6 +84,7 @@
                 if (obstaclePosition <= -50) {
                     obstaclePosition = 450;
                     score++;  // O'yinchiga ball berish
+                    scoreDisplay.textContent = "Score: " + score; // Ballarni yangilash
                 }
                 obstaclePosition -= 5;
                 obstacle.style.left = obstaclePosition + 'px';
@@ -77,8 +93,8 @@
                 let playerBottom = parseInt(window.getComputedStyle(player).getPropertyValue('bottom'));
                 if (obstaclePosition <= 150 && obstaclePosition >= 100 && playerBottom <= 50) {
                     clearInterval(obstacleInterval);
-                    alert("O'yin tugadi! To'qnashuv yuz berdi. Ballaringiz: " + score);
                     gameOver = true;
+                    gameOverDisplay.style.display = 'block'; // "O'yin tugadi!" xabarini ko'rsatish
                 }
             }, 20);
         }
@@ -113,7 +129,9 @@
         function restartGame() {
             clearInterval(obstacleInterval); // Eski to'siq intervalini to'xtatish
             score = 0; // Ballarni noldan boshlash
+            scoreDisplay.textContent = "Score: " + score; // Ballarni yangilash
             gameOver = false;
+            gameOverDisplay.style.display = 'none'; // O'yin tugadi xabarini yashirish
             player.style.bottom = '0px'; // O'yinchini qayta joylashtirish
             obstacle.style.left = '450px'; // To'siqni qayta joylashtirish
             moveObstacle(); // To'siqni qayta harakatlantirish
