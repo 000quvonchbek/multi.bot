@@ -10,33 +10,28 @@ const bot = new TelegramBot(token, { polling: true });
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
-  // Menyu tugmalarini yaratish
+  // O'yinni boshlash tugmasini yaratish
   const menuOptions = {
     reply_markup: {
       keyboard: [
-        [{ text: 'Menyu 1' }, { text: 'Menyu 2' }],
-        [{ text: 'Menyu 3' }],
+        [{ text: 'O\'yinni boshlash' }]
       ],
-      resize_keyboard: true,
-      one_time_keyboard: true
+      resize_keyboard: true, // Tugmani mos hajmga keltirish
+      one_time_keyboard: true // Bir martalik tugma
     }
   };
 
-  // Foydalanuvchiga menyu tugmalarini yuborish
-  bot.sendMessage(chatId, 'Menyu tugmasini tanlang:', menuOptions);
+  // Foydalanuvchiga o'yin tugmasini yuborish
+  bot.sendMessage(chatId, 'O\'yinni boshlash uchun tugmani bosing:', menuOptions);
 });
 
+// O'yinni boshlash tugmasini qayta ishlash
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
 
-  if (msg.text === 'Menyu 1') {
-    bot.sendMessage(chatId, 'Siz Menyu 1 ni tanladingiz. Mana sayt: https://000quvonchbek.github.io/multi.bot/');
-  } else if (msg.text === 'Menyu 2') {
-    bot.sendMessage(chatId, 'Siz Menyu 2 ni tanladingiz.');
-  } else if (msg.text === 'Menyu 3') {
-    bot.sendMessage(chatId, 'Siz Menyu 3 ni tanladingiz.');
+  if (msg.text === 'O\'yinni boshlash') {
+    bot.sendMessage(chatId, 'Mana o\'yin sayti: https://000quvonchbek.github.io/multi.bot/');
   } else {
-    bot.sendMessage(chatId, 'Menyudan tanlang.');
+    bot.sendMessage(chatId, 'O\'yinni boshlash tugmasini tanlang.');
   }
 });
-
