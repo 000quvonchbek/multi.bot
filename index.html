@@ -23,7 +23,7 @@
             height: 50px;
             border-radius: 50%;
             background-image: url(rabbit.jpg);
-            background-size:cover; 
+            background-size: cover;
             position: absolute;
             bottom: 0;
             left: 100px;
@@ -33,7 +33,7 @@
             height: 50px;
             border-radius: 50%;
             background-image: url(fox.jpg);
-            background-size:cover; 
+            background-size: cover;
             position: absolute;
             bottom: 0;
             left: 450px;
@@ -52,6 +52,7 @@
         <div id="obstacle"></div>
     </div>
     <button onclick="jump()">Jump!</button>
+    <button onclick="restartGame()">Restart Game</button> <!-- O'yinni qayta boshlash tugmasi -->
 
     <script>
         let player = document.getElementById('player');
@@ -59,11 +60,12 @@
         let isJumping = false;
         let gameOver = false;
         let score = 0;
+        let obstacleInterval; // To'siq harakatini saqlash uchun o'zgaruvchi
 
         // Harakatlanuvchi to'siq
         function moveObstacle() {
             let obstaclePosition = 450;
-            let interval = setInterval(() => {
+            obstacleInterval = setInterval(() => {
                 if (obstaclePosition <= -50) {
                     obstaclePosition = 450;
                     score++;  // O'yinchiga ball berish
@@ -74,7 +76,7 @@
                 // To'siq va o'yinchi to'qnashuvi
                 let playerBottom = parseInt(window.getComputedStyle(player).getPropertyValue('bottom'));
                 if (obstaclePosition <= 150 && obstaclePosition >= 100 && playerBottom <= 50) {
-                    clearInterval(interval);
+                    clearInterval(obstacleInterval);
                     alert("O'yin tugadi! To'qnashuv yuz berdi. Ballaringiz: " + score);
                     gameOver = true;
                 }
@@ -105,6 +107,16 @@
                     }
                 }, 20);
             }
+        }
+
+        // O'yinni qayta boshlash funksiyasi
+        function restartGame() {
+            clearInterval(obstacleInterval); // Eski to'siq intervalini to'xtatish
+            score = 0; // Ballarni noldan boshlash
+            gameOver = false;
+            player.style.bottom = '0px'; // O'yinchini qayta joylashtirish
+            obstacle.style.left = '450px'; // To'siqni qayta joylashtirish
+            moveObstacle(); // To'siqni qayta harakatlantirish
         }
 
         // O'yinni boshlash
