@@ -35,7 +35,7 @@ bot.on('message', (msg) => {
     const gameOptions = {
       reply_markup: {
         inline_keyboard: [
-          [{ text: 'O\'yinni boshlash', url: 'https://000quvonchbek.github.io/multi.bot/menyu1' }]
+          [{ text: 'O\'yinni boshlash', url: 'https://000quvonchbek.github.io/multi.bot/boom.html' }]
         ]
       }
     };
@@ -55,7 +55,7 @@ bot.on('message', (msg) => {
     const gameOptions = {
       reply_markup: {
         inline_keyboard: [
-          [{ text: 'Menyu 3 uchun havola', url: 'https://000quvonchbek.github.io/menyu3/' }]
+          [{ text: 'Menyu 3 uchun havola', url: 'https://000quvonchbek.github.io/multi.bot/m.html' }]
         ]
       }
     };
