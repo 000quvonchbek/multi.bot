@@ -30,7 +30,7 @@ bot.onText(/\/start/, (msg) => {
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
 
-  if (msg.text === 'Menyu 1') {
+  if (msg.text === 'Main menu') {
     // Menyu 1 uchun link
     const gameOptions = {
       reply_markup: {
