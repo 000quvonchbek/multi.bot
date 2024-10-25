@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shar Otish O'yini</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #game {
+            width: 500px;
+            height: 500px;
+            background-color: #f0f0f0;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #000;
+        }
+        .bullet {
+            width: 10px;
+            height: 20px;
+            background-color: black;
+            position: absolute;
+        }
+        .balloon {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+        }
+        #redLine {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-color: red;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Shar Otish O'yini</h1>
+    <div id="game" onclick="shoot(event)">
+        <div id="redLine"></div>
+    </div>
+    <p>Score: <span id="score">0</span></p>
+    <button onclick="restartGame()">O'yinni qayta boshlash</button>
+
+    <script>
+        let game = document.getElementById('game');
+        let score = 0;
+        let gameInterval;
+        let isShooting = false;
+
+        // Tasodifiy sharlar yaratish
+        function createBalloon() {
+            let balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.left = Math.random() * 450 + 'px';
+            game.appendChild(balloon);
+
+            let balloonFall = setInterval(() => {
+                let balloonTop = parseInt(window.getComputedStyle(balloon).getPropertyValue('top'));
+                if (balloonTop >= 450) {
+                    clearInterval(balloonFall);
+                    balloon.remove();
+                    gameOver();
+                } else {
+                    balloon.style.top = balloonTop + 2 + 'px';
+                }
+            }, 20);
+        }
+
+        // Har 1.5 soniyada sharlar tushadi
+        function startGame() {
+            gameInterval = setInterval(createBalloon, 1500);
+        }
+
+        // O'yinchi o'q otadi
+        function shoot(event) {
+            if (isShooting) return;
+            isShooting = true;
+
+            let bullet = document.createElement('div');
+            bullet.classList.add('bullet');
+            
+            // O'qning boshlanish joyini aniqlash
+            let rect = game.getBoundingClientRect();
+            let x = event.clientX - rect.left;
+            bullet.style.left = x - 5 + 'px'; // O'qni markazlashtirish
+            bullet.style.bottom = '10px';
+            game.appendChild(bullet);
+
+            let bulletPos = 10;
+            let shootInterval = setInterval(() => {
+                if (bulletPos >= 500) {
+                    clearInterval(shootInterval);
+                    bullet.remove();
+                    isShooting = false;
+                } else {
+                    bulletPos += 5;
+                    bullet.style.bottom = bulletPos + 'px';
+
+                    // O'q va shar to'qnashuvi
+                    let balloons = document.getElementsByClassName('balloon');
+                    for (let i = 0; i < balloons.length; i++) {
+                        let balloon = balloons[i];
+                        let balloonRect = balloon.getBoundingClientRect();
+                        let bulletRect = bullet.getBoundingClientRect();
+                        if (bulletRect.left < balloonRect.left + balloonRect.width &&
+                            bulletRect.left + bulletRect.width > balloonRect.left &&
+                            bulletRect.top < balloonRect.top + balloonRect.height &&
+                            bulletRect.height + bulletRect.top > balloonRect.top) {
+                            balloon.remove();
+                            clearInterval(shootInterval);
+                            bullet.remove();
+                            isShooting = false;
+                            score++;
+                            document.getElementById('score').textContent = score;
+                        }
+                    }
+                }
+            }, 20);
+        }
+
+        // O'yin tugashi
+        function gameOver() {
+            clearInterval(gameInterval);
+            alert("O'yin tugadi! Ballaringiz: " + score);
+        }
+
+        // O'yinni qayta boshlash
+        function restartGame() {
+            document.getElementById('score').textContent = '0';
+            score = 0;
+            let balloons = document.getElementsByClassName('balloon');
+            while (balloons[0]) {
+                balloons[0].remove();
+            }
+            clearInterval(gameInterval);
+            startGame();
+        }
+
+        startGame(); // O'yinni boshlash
+    </script>
+</body>
+</html>

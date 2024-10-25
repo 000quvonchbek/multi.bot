@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ball To'plash O'yini</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #game {
+            width: 500px;
+            height: 300px;
+            background-color: #f0f0f0;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #000;
+        }
+        #player {
+            width: 50px;
+            height: 50px;
+            background-color: #3498db;
+            position: absolute;
+            bottom: 0;
+            left: 100px;
+        }
+        #coin {
+            width: 30px;
+            height: 30px;
+            background-color: gold;
+            position: absolute;
+            top: 50px;
+            left: 300px;
+            border-radius: 50%;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ball To'plash O'yini</h1>
+    <div id="game">
+        <div id="player"></div>
+        <div id="coin"></div>
+    </div>
+    <button onclick="jump()">Jump!</button>
+    <p>Score: <span id="score">0</span></p>
+
+    <script>
+        let player = document.getElementById('player');
+        let coin = document.getElementById('coin');
+        let score = 0;
+
+        // O'yinchi sakrashi
+        function jump() {
+            let jumpHeight = 0;
+            let isJumping = true;
+            let upInterval = setInterval(() => {
+                if (jumpHeight >= 150) {
+                    clearInterval(upInterval);
+                    let downInterval = setInterval(() => {
+                        if (jumpHeight <= 0) {
+                            clearInterval(downInterval);
+                            isJumping = false;
+                        } else {
+                            jumpHeight -= 5;
+                            player.style.bottom = jumpHeight + 'px';
+                        }
+                    }, 20);
+                } else {
+                    jumpHeight += 5;
+                    player.style.bottom = jumpHeight + 'px';
+                }
+            }, 20);
+
+            // O'yinchi va tanga to'qnashuvi
+            let playerPos = player.getBoundingClientRect();
+            let coinPos = coin.getBoundingClientRect();
+            if (playerPos.left < coinPos.left + coinPos.width &&
+                playerPos.left + playerPos.width > coinPos.left &&
+                playerPos.top < coinPos.top + coinPos.height &&
+                playerPos.height + playerPos.top > coinPos.top) {
+                coin.style.top = Math.random() * 270 + 'px';
+                coin.style.left = Math.random() * 470 + 'px';
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+        }
+    </script>
+</body>
+</html>
