@@ -58,14 +58,14 @@
 <body>
 
     <h1>Mini O'yin</h1>
-    <div id="score">Score: 0</div> <!-- Ballar ko'rsatkichi -->
+    <div id="score">Score: 0</div>
     <div id="game">
         <div id="player"></div>
         <div id="obstacle"></div>
     </div>
     <button onclick="jump()">Jump!</button>
-    <button onclick="restartGame()">Restart Game</button> <!-- O'yinni qayta boshlash tugmasi -->
-    <div id="game-over">O'yin tugadi!</div> <!-- O'yin tugadi xabari -->
+    <button onclick="restartGame()">Restart Game</button> 
+    <div id="game-over">O'yin tugadi!</div> 
 
     <script>
         let player = document.getElementById('player');
@@ -125,19 +125,19 @@
             }
         }
 
-        // O'yinni qayta boshlash funksiyasi
+        
         function restartGame() {
-            clearInterval(obstacleInterval); // Eski to'siq intervalini to'xtatish
-            score = 0; // Ballarni noldan boshlash
-            scoreDisplay.textContent = "Score: " + score; // Ballarni yangilash
+            clearInterval(obstacleInterval); 
+            score = 0; 
+            scoreDisplay.textContent = "Score: " + score; 
             gameOver = false;
-            gameOverDisplay.style.display = 'none'; // O'yin tugadi xabarini yashirish
-            player.style.bottom = '0px'; // O'yinchini qayta joylashtirish
-            obstacle.style.left = '450px'; // To'siqni qayta joylashtirish
-            moveObstacle(); // To'siqni qayta harakatlantirish
+            gameOverDisplay.style.display = 'none'; 
+            player.style.bottom = '0px'; 
+            obstacle.style.left = '450px'; 
+            moveObstacle(); 
         }
 
-        // O'yinni boshlash
+
         moveObstacle();
     </script>
 </body>
